@@ -2,7 +2,7 @@ window.addEventListener("load",function(){
     //selectors
     let nameObject =document.querySelector("h2[name=name]")
     let popUp= document.querySelector(".welcome")
-    let result= document.querySelector(".result")
+    //let result= document.querySelector(".result")
 
     let startGame=document.querySelector("button[name=start]")
     //do
@@ -18,4 +18,9 @@ window.addEventListener("load",function(){
     //if user clicked play again
     //result.classList.remove("showResult")
     //location.reload()
+    //localStorage.setItem("LastVisit",new Date().toLocaleString())
+    //document.queryselector("visit").innerText=`Your Last visit was : ${localStorage.getItem('LastVisit')}`
+    //localStorage.setItem("LastScore",score)
+    //document.queryselector("lastScore").innerText=`Your Last score was : ${localStorage.getItem('LastScore')}`
+
 })
