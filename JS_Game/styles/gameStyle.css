@@ -25,21 +25,10 @@ div {
     height: 350px;
     background-color: rgb(55, 131, 185, 0.2);
     border: 4px rgb(17, 57, 86) solid;
-    margin: auto;
     border-radius: 20px;
-    top: 0;
-    left: 40%;
-    transform: translate(-75%,-35%) scale(0.1);
-    /* visibility: hidden; */
-    transition: transform 0.9s, top 0.9s;
+    margin-top: 10%;
+    margin-left: 30%;
     text-align: center;
-}
-
-.showResult
-{
-    top: 40%;
-    visibility: visible;
-    transform: translate(75%,35%) scale(1); 
 }
 
 .welcome {
@@ -94,4 +83,23 @@ button:hover,
 button:focus {
     background-color: #5d8d97;
     color: #D5DED9;
+}
+
+.bird
+{
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    left: 0px;
+}
+
+.bomb
+{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+}
+.hidden
+{
+    display: none;
 }

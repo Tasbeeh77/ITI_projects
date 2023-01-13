@@ -4,7 +4,7 @@
         let nameObject=document.querySelector("input")
         //events
         goButton.onclick = function(){
-            localStorage.setItem("name", nameObject.value)
+            sessionStorage.setItem("name", nameObject.value)
             location.href = "http://127.0.0.1:5500/pages/game.html"
         }
 
