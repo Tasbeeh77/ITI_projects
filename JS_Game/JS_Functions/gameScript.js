@@ -23,6 +23,7 @@ let isClicked = 0;
 
 //create bird
 const createBirds = () => {
+    
     let timerId;
     let bird = document.createElement("embed")
     let index = Math.floor(Math.random() * 3)
@@ -109,8 +110,7 @@ const fallDown = (bomb, top) => {
 }
 
 //countDown Timer
-let countDown = () => {
-    let timeObject = document.querySelector("h2[name=time]")
+let countDown = (timeObject,result) => {
     let id = setInterval(() => {
         if (time > 0) {
             timeObject.innerText = `${--time}`
@@ -121,7 +121,18 @@ let countDown = () => {
             sessionStorage.setItem("LastScore", score)
             document.querySelector("body").removeChild(document.querySelector(".bird"))
             document.querySelector("body").removeChild(document.querySelector(".bomb"))
-            document.querySelector("div[name=finalResult]").classList.remove("hidden")
+            if(score>50)
+            {
+                document.querySelector("div h1[name=result]").innerText="You Won!"
+                document.querySelector("div img[name=resultImg]").src="../images/win.png"
+                result.classList.remove("hidden")
+            }
+            else
+            {
+                document.querySelector("div h1[name=result]").innerText="You Lose!"
+                document.querySelector("div img[name=resultImg]").src="../images/lose.png"
+                result.classList.remove("hidden")  
+            }
         }
 
     }, 1000);
@@ -142,8 +153,7 @@ const countScoreResult = () => {
     }
 }
 //Last user info
-const lastInfo = (LastVisit,LastScore)=>
-{
+const lastInfo = (LastVisit, LastScore) => {
     if (sessionStorage.getItem('LastVisit') && sessionStorage.getItem('LastScore')) {
         LastVisit.classList.remove("hidden")
         LastScore.classList.remove("hidden")
@@ -156,6 +166,7 @@ const lastInfo = (LastVisit,LastScore)=>
     }
 }
 
+//page Loading
 window.addEventListener("load", function () {
     //selectors
     let nameObject = document.querySelector("h2[name=name]")
@@ -166,17 +177,19 @@ window.addEventListener("load", function () {
     let playAgain = document.querySelector("button[name=playAgain]")
     let Cancel = document.querySelector("button[name=cancel]")
     let result = document.querySelector("div[name=finalResult]")
+    let timeObject = document.querySelector("h2[name=time]")
+
     //do
     nameObject.innerText = sessionStorage.getItem('name')
 
     //display Last visit and Last score on the popUp window
-    lastInfo(LastVisit,LastScore)
+    lastInfo(LastVisit, LastScore)
     popUp.classList.add("openPop")
 
     //start Game
     startGame.onclick = () => {
         popUp.classList.remove("openPop")
-        countDown()
+        countDown(timeObject,result)
         setTimeout(() => {
             createBomb()
         }, 1000);
