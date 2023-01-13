@@ -1,0 +1,97 @@
+body {
+    background-image: url("../images/game.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+div {
+
+    width: 300px;
+    height: 50px;
+    background-color: rgb(55, 131, 185, 0.2);
+    border: 3px rgb(67, 127, 170) solid;
+    border-radius: 50px;
+    display: inline-block;
+    margin: auto;
+    margin-top: 0px;
+    margin-left: 30px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.result {
+    width: 600px;
+    height: 350px;
+    background-color: rgb(55, 131, 185, 0.2);
+    border: 4px rgb(17, 57, 86) solid;
+    margin: auto;
+    border-radius: 20px;
+    top: 0;
+    left: 40%;
+    transform: translate(-75%,-35%) scale(0.1);
+    /* visibility: hidden; */
+    transition: transform 0.9s, top 0.9s;
+    text-align: center;
+}
+
+.showResult
+{
+    top: 40%;
+    visibility: visible;
+    transform: translate(75%,35%) scale(1); 
+}
+
+.welcome {
+    width: 600px;
+    height: 350px;
+    background-color: white;
+    border: 3px white solid;
+    border-radius: 15px;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 40%;
+    transform: translate(-30%, -30%) scale(0.1);
+    visibility: hidden;
+    transition: transform 0.9s, top 0.9s;
+}
+
+.openPop {
+    top: 40%;
+    visibility: visible;
+    transform: translate(-30%, -30%) scale(1);
+}
+
+h2 {
+    display: inline-block;
+    font-size: 30px;
+    font-weight: bold;
+    margin: auto;
+    padding-top: 5px;
+    color: rgb(32, 32, 154, 0.8);
+}
+
+h3[name=second] {
+    color: rgb(32, 32, 154, 0.8);
+}
+
+img {
+    width: 300px;
+    height: 150px;
+}
+
+button {
+    width: 150px;
+    height: 50px;
+    font-size: 22px;
+    color: white;
+    background-color: rgb(32, 32, 154);
+    border-radius: 15px;
+}
+
+button:hover,
+button:focus {
+    background-color: #5d8d97;
+    color: #D5DED9;
+}
