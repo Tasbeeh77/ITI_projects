@@ -15,6 +15,7 @@ const birdsArray = [
 ]
 const birdSize = 250
 const bombSize = 100
+let currentBirds = []
 let time = 10
 let score = 0
 let killed = 0
@@ -27,6 +28,7 @@ const createBirds = () => {
         bird.classList.add("bird")
         bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdSize)) + 'px'
         document.querySelector("body").append(bird)
+        currentBirds.push(bird)
         moveRight(bird, 0)
         if (time == 0) {
             clearInterval(interval)
@@ -35,7 +37,7 @@ const createBirds = () => {
 }
 //bird moveRight
 const moveRight = (bird, left) => {
-    console.log(document.querySelectorAll(".bird"));
+    console.log(currentBirds);
     let timerId = setInterval(() => {
         if (time > 0) {
             if (left < (window.innerWidth - birdSize - 15) && bombIsClicked == 0) {
@@ -45,6 +47,7 @@ const moveRight = (bird, left) => {
             else {
                 setTimeout(() => {
                     document.querySelector("body").removeChild(bird)
+                    currentBirds.splice(currentBirds.length - 1, 1)
                 }, 100);
                 clearInterval(timerId)
             }
@@ -67,8 +70,9 @@ const createBomb = () => {
         bomb.src = "../images/explosion.png"
         countScoreResult()
         document.querySelector("h2[name=score]").innerHTML = `${score}`
-        killed += document.querySelectorAll(".bird").length
+        killed += currentBirds.length
         document.querySelector("h2[name=kill]").innerHTML = `${killed}`
+        
     })
 }
 //bomb falldown
@@ -93,17 +97,6 @@ const fallDown = (bomb, top) => {
             document.querySelector("body").removeChild(bomb)
         }
     }, 60);
-}
-//check surrounding birds
-const checkSurroundingBirds=()=>
-{
-    document.querySelectorAll(".bird").forEach((item) => 
-    { 
-        if(item.left)
-        {
-
-        }
-    }) 
 }
 //display result
 const displayResult = result => {
@@ -135,7 +128,7 @@ let countDown = (timeObject, result) => {
 }
 //count score
 const countScoreResult = () => {
-    let currentBirds=document.querySelectorAll(".bird")
+    console.log(currentBirds.length)
     for (let i = 0; i < currentBirds.length; i++) {
         console.log(currentBirds[i].src.slice(29, 34))
         if (currentBirds[i].src.slice(29, 34) == 'white') {

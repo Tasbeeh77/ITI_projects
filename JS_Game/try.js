@@ -15,38 +15,48 @@ const birdsArray = [
 ]
 const birdSize = 250
 const bombSize = 100
-let time = 10
+
+let currentBirds = []
+let countt = 0
+let time = 60
 let score = 0
 let killed = 0
 let bombIsClicked = 0 //to remove bomb when it clicked and not let it continue moving
+let birdIsClicked = 0
+
 //create bird
 const createBirds = () => {
-    let interval = setInterval(() => {
-        let bird = document.createElement("embed")
-        bird.src = birdsArray[Math.floor(Math.random() * 3)].gif
-        bird.classList.add("bird")
-        bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdSize)) + 'px'
-        document.querySelector("body").append(bird)
-        moveRight(bird, 0)
-        if (time == 0) {
-            clearInterval(interval)
-        }
-    }, 900);
+    let birdsNumbers = Math.floor(Math.random() * 10 + 1)
+    let bird = document.createElement("embed")
+    bird.src = birdsArray[Math.floor(Math.random() * 3)].gif
+    bird.classList.add("bird")
+    currentBirds.push(bird)
+    bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdSize)) + 'px'
+    document.querySelector("body").append(bird)
+    moveRight(bird, 0, countt)
+    countt++
+
 }
+
 //bird moveRight
-const moveRight = (bird, left) => {
-    console.log(document.querySelectorAll(".bird"));
+const moveRight = (bird, left, index) => {
     let timerId = setInterval(() => {
         if (time > 0) {
-            if (left < (window.innerWidth - birdSize - 15) && bombIsClicked == 0) {
+            if (left < (window.innerWidth - birdSize - 15) && birdIsClicked == 0 && bombIsClicked == 0) {
                 left += 15
                 bird.style.left = left + 'px'
             }
             else {
                 setTimeout(() => {
                     document.querySelector("body").removeChild(bird)
+                    currentBirds.splice(index - 1, 1)
+                    countt--              
                 }, 100);
                 clearInterval(timerId)
+                birdIsClicked = 0
+                setTimeout(() => {
+                    createBirds()
+                }, 1000);
             }
         }
         else {
@@ -54,6 +64,7 @@ const moveRight = (bird, left) => {
         }
     }, 30);
 }
+
 //create Bomb
 const createBomb = () => {
     let bomb = document.createElement("img")
@@ -65,12 +76,13 @@ const createBomb = () => {
     bomb.addEventListener("click", function () {
         bombIsClicked = 1;
         bomb.src = "../images/explosion.png"
-        countScoreResult()
+        countScoreResultBird(currentBirds[countt-1].src.slice(29, 34))
         document.querySelector("h2[name=score]").innerHTML = `${score}`
-        killed += document.querySelectorAll(".bird").length
+        killed += currentBirds.length
         document.querySelector("h2[name=kill]").innerHTML = `${killed}`
     })
 }
+
 //bomb falldown
 const fallDown = (bomb, top) => {
     let timerId = setInterval(() => {
@@ -90,21 +102,11 @@ const fallDown = (bomb, top) => {
         }
         else {
             clearInterval(timerId)
-            document.querySelector("body").removeChild(bomb)
         }
     }, 60);
 }
-//check surrounding birds
-const checkSurroundingBirds=()=>
-{
-    document.querySelectorAll(".bird").forEach((item) => 
-    { 
-        if(item.left)
-        {
 
-        }
-    }) 
-}
+
 //display result
 const displayResult = result => {
     if (score >= 50) {
@@ -118,6 +120,7 @@ const displayResult = result => {
         result.classList.remove("hidden")
     }
 }
+
 //countDown Timer
 let countDown = (timeObject, result) => {
     let id = setInterval(() => {
@@ -128,26 +131,39 @@ let countDown = (timeObject, result) => {
             clearInterval(id)
             sessionStorage.setItem("LastVisit", new Date().toLocaleString())
             sessionStorage.setItem("LastScore", score)
-            document.querySelectorAll(".bird").forEach((item) => { document.querySelector("body").removeChild(item) })
+            if (document.querySelector(".bird"))
+                document.querySelector("body").removeChild(document.querySelector(".bird"))
+            if (document.querySelector(".bomb"))
+                document.querySelector("body").removeChild(document.querySelector(".bomb"))
             displayResult(result)
         }
+
     }, 1000);
 }
+
 //count score
-const countScoreResult = () => {
-    let currentBirds=document.querySelectorAll(".bird")
-    for (let i = 0; i < currentBirds.length; i++) {
-        console.log(currentBirds[i].src.slice(29, 34))
-        if (currentBirds[i].src.slice(29, 34) == 'white') {
-            score += 5
-        }
-        if (currentBirds[i].src.slice(29, 34) == 'black') {
-            score += 10
-        }
-        if (currentBirds[i].src.slice(29, 34) == 'blue.') {
-            score -= 10
-        }
-        console.log("sore: ", score)
+// const countScoreResultBomb = () => {
+//     for (let i = 0; i < currentBirds.length; i++) {
+//         if (currentBirds[i].src.slice(29, 34) == 'white') {
+//             score += 5
+//         }
+//         if (currentBirds[i].src.slice(29, 34) == 'black') {
+//             score += 10
+//         }
+//         if (currentBirds[i].src.slice(29, 34) == 'blue.') {
+//             score -= 10
+//         }
+//     }
+// }
+const countScoreResultBird = (imag) => {
+    if (imag == 'white') {
+        score += 5
+    }
+    if (imag == 'black') {
+        score += 10
+    }
+    if (imag == 'blue.') {
+        score -= 10
     }
 }
 //Last user info
@@ -163,6 +179,7 @@ const lastInfo = (LastVisit, LastScore) => {
         LastScore.classList.add("hidden")
     }
 }
+
 //page Loading
 window.addEventListener("load", function () {
     //selectors
@@ -175,11 +192,15 @@ window.addEventListener("load", function () {
     let Cancel = document.querySelector("button[name=cancel]")
     let result = document.querySelector("div[name=finalResult]")
     let timeObject = document.querySelector("h2[name=time]")
+
+
     //do
     nameObject.innerText = sessionStorage.getItem('name')
+
     //display Last visit and Last score on the popUp window
     lastInfo(LastVisit, LastScore)
     popUp.classList.add("openPop")
+
     //start Game
     startGame.onclick = () => {
         popUp.classList.remove("openPop")
@@ -189,11 +210,13 @@ window.addEventListener("load", function () {
         }, 1000);
         createBirds()
     }
+
     //play again
     playAgain.onclick = () => {
         result.classList.add("hidden")
         location.reload()
     }
+
     //cancel
     Cancel.onclick = () => {
         result.classList.add("hidden")
