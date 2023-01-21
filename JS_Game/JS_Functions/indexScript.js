@@ -10,7 +10,7 @@ import { pascalCase , CheckName } from "../Modules/functions.js";
             if(CheckName(nameObject.value)==true)
             {
                 sessionStorage.setItem("name", pascalCase(nameObject.value))
-                location.href = "http://127.0.0.1:5500/pages/game.html"
+                location.href = "../pages/game.html"
             }
             else
             {

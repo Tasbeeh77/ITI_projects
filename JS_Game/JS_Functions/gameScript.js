@@ -1,41 +1,35 @@
 //shared variables
-const birdsArray = [
-    '../images/white.gif',
-    '../images/black.gif',
-    '../images/blue.gif'
-]
-const birdSize = 250;
-const bombSize = 100;
 let time = 60;
 let score = 0;
 let killed = 0;
 let bombIsClicked = 0; //to remove bomb when it clicked and not let it continue moving
 //create bird
-const createBirds = () => {
+const createBirds = (birdsArray) => {
     let interval = setInterval(() => {
         let bird = document.createElement("embed");
         bird.src = birdsArray[Math.floor(Math.random() * 3)];
         bird.classList.add("bird");
-        bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdSize)) + 'px';
+        bird.style.top = Math.floor(Math.random() * (window.innerHeight - 260)) + 'px';
         document.querySelector("body").append(bird);
         moveRight(bird, 0);
         if (time == 0) {
             clearInterval(interval);
         }
-    }, 800);
+    }, 900);
 }
 //bird moveRight
 const moveRight = (bird, left) => {
-    console.log(document.querySelectorAll(".bird"));
     let timerId = setInterval(() => {
         if (time > 0) {
-            if (left < (window.innerWidth - birdSize - 15) && bombIsClicked == 0) {
-                left += 15;
+            if (left < (window.innerWidth - 265)) {
+                left += 10;
                 bird.style.left = left + 'px';
             }
             else {
                 setTimeout(() => {
-                    document.querySelector("body").removeChild(bird);
+                    if (document.querySelector("body").contains(bird)) {
+                        document.querySelector("body").removeChild(bird);
+                    }
                 }, 100);
                 clearInterval(timerId);
             }
@@ -50,15 +44,23 @@ const createBomb = () => {
     let bomb = document.createElement("img");
     bomb.src = "../images/bomb.png";
     bomb.classList.add("bomb");
-    bomb.style.left = Math.floor(Math.random() * (window.innerWidth - bombSize)) + 'px';
+    bomb.style.left = Math.floor(Math.random() * (window.innerWidth - 110)) + 'px';
     document.querySelector("body").append(bomb);
-    fallDown(bomb, 64);
+    fallDown(bomb, 64);  //start moving down the bomb
     bomb.addEventListener("click", function () {
-        bombIsClicked = 1;
-        bomb.src = "../images/explosion.png";
-        countScoreResult();
+        bombIsClicked = 1; //stop bomb from moving down
+        //pushing surrounding birds in an array to calculate their score then deleting them
+        let surrounding = checkSurroundingBirds(); //1
+        countScoreResult(surrounding); //2 
+        surrounding.forEach((item) => {
+            item.src = "../images/explosion.png";
+            setTimeout(() => {
+                document.querySelector("body").removeChild(item) //3
+            }, 150);
+        });
+        //increasing score and killed birds number
         document.querySelector("h2[name=score]").innerHTML = `${score}`;
-        killed += document.querySelectorAll(".bird").length;
+        killed += surrounding.length;
         document.querySelector("h2[name=kill]").innerHTML = `${killed}`;
     })
 }
@@ -66,12 +68,14 @@ const createBomb = () => {
 const fallDown = (bomb, top) => {
     let timerId = setInterval(() => {
         if (time > 0) {
-            if (top < (window.innerHeight - bombSize - 10) && bombIsClicked == 0) {
+            if (top < (window.innerHeight - 110) && bombIsClicked == 0) {
                 top += 10;
                 bomb.style.top = top + 'px';
             }
             else {
-                document.querySelector("body").removeChild(bomb);
+                setTimeout(() => {
+                    document.querySelector("body").removeChild(bomb);
+                }, 150);
                 clearInterval(timerId);
                 bombIsClicked = 0;
                 setTimeout(() => {
@@ -87,17 +91,19 @@ const fallDown = (bomb, top) => {
 }
 //check surrounding birds
 const checkSurroundingBirds = () => {
-    let surroundingBirds= new Array();
+    let currentBomb = document.querySelector(".bomb");
+    let surroundingBirds = new Array();
     document.querySelectorAll(".bird").forEach((item) => {
-        if (item.style.left) {
-          surroundingBirds.push(item);
+        if (((item.offsetLeft + item.offsetWidth) > (currentBomb.offsetLeft - 200) &&
+            (item.offsetLeft) < (currentBomb.offsetLeft + 300))) {
+            surroundingBirds.push(item);
         }
     })
     return surroundingBirds;
 }
 //display result
 const displayResult = result => {
-    if (score >= 50) {
+    if (score > 50) {
         document.querySelector("div h1[name=result]").innerText = "You Won!";
         document.querySelector("div img[name=resultImg]").src = "../images/win.png";
         result.classList.remove("hidden");
@@ -124,10 +130,8 @@ let countDown = (timeObject, result) => {
     }, 1000);
 }
 //count score
-const countScoreResult = () => {
-    let currentBirds = document.querySelectorAll(".bird");
+const countScoreResult = (currentBirds) => {
     for (let i = 0; i < currentBirds.length; i++) {
-        console.log(currentBirds[i].src.slice(29, 34));
         if (currentBirds[i].src.slice(29, 34) == 'white') {
             score += 5;
         }
@@ -137,7 +141,6 @@ const countScoreResult = () => {
         if (currentBirds[i].src.slice(29, 34) == 'blue.') {
             score -= 10;
         }
-        console.log("sore: ", score);
     }
 }
 //Last user info
@@ -165,6 +168,7 @@ window.addEventListener("load", function () {
     let Cancel = document.querySelector("button[name=cancel]");
     let result = document.querySelector("div[name=finalResult]");
     let timeObject = document.querySelector("h2[name=time]");
+    const birdsArray = ['../images/white.gif', '../images/black.gif', '../images/blue.gif']
     //do
     nameObject.innerText = sessionStorage.getItem('name');
     //display Last visit and Last score on the popUp window
@@ -177,7 +181,7 @@ window.addEventListener("load", function () {
         setTimeout(() => {
             createBomb();
         }, 1000);
-        createBirds();
+        createBirds(birdsArray);
     }
     //play again
     playAgain.onclick = () => {
@@ -187,7 +191,7 @@ window.addEventListener("load", function () {
     //cancel
     Cancel.onclick = () => {
         result.classList.add("hidden");
-        location.href = "http://127.0.0.1:5500/pages/index.html";
+        location.href = "../pages/index.html";
     }
 })
 
