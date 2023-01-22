@@ -7,14 +7,12 @@ let bombIsClicked = 0; //to remove bomb when it clicked and not let it continue 
 const createBirds = (birdsSrc) => {
     const birdHeight = 250;
     let interval = setInterval(() => {
-        for (let i = 0; i < Math.floor(Math.random() * 2 + 1); i++) {
             let bird = document.createElement("embed");
             bird.src = birdsSrc[Math.floor(Math.random() * 3)];
             bird.classList.add("bird");
             bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdHeight - 10)) + 'px';
             document.querySelector("body").append(bird);
             moveRight(bird, 0);
-        }
         if (time == 0) { clearInterval(interval); }
     }, 900);
 }
