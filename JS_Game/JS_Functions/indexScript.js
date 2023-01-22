@@ -1,5 +1,5 @@
-import { pascalCase , CheckName } from "../Modules/functions.js";
-   
+import { pascalCase , CheckName } from "./functions.js";
+  
     window.addEventListener("load",function(){
         //selectors
         let goButton =document.querySelector("button")
