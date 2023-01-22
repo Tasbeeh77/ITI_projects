@@ -4,17 +4,17 @@ let score = 0;
 let killed = 0;
 let bombIsClicked = 0; //to remove bomb when it clicked and not let it continue moving
 //create bird
-const createBirds = (birdsArray) => {
+const createBirds = (birdsSrc) => {
     let interval = setInterval(() => {
-        let bird = document.createElement("embed");
-        bird.src = birdsArray[Math.floor(Math.random() * 3)];
-        bird.classList.add("bird");
-        bird.style.top = Math.floor(Math.random() * (window.innerHeight - 260)) + 'px';
-        document.querySelector("body").append(bird);
-        moveRight(bird, 0);
-        if (time == 0) {
-            clearInterval(interval);
+        for (let i = 0; i < Math.floor(Math.random() * 2 + 1); i++) {
+            let bird = document.createElement("embed");
+            bird.src = birdsSrc[Math.floor(Math.random() * 3)];
+            bird.classList.add("bird");
+            bird.style.top = Math.floor(Math.random() * (window.innerHeight - 260)) + 'px';
+            document.querySelector("body").append(bird);
+            moveRight(bird, 0);
         }
+        if (time == 0) { clearInterval(interval); }
     }, 900);
 }
 //bird moveRight
@@ -26,11 +26,7 @@ const moveRight = (bird, left) => {
                 bird.style.left = left + 'px';
             }
             else {
-                setTimeout(() => {
-                    if (document.querySelector("body").contains(bird)) {
-                        document.querySelector("body").removeChild(bird);
-                    }
-                }, 100);
+                if (document.querySelector("body").contains(bird)) { document.querySelector("body").removeChild(bird); }
                 clearInterval(timerId);
             }
         }
@@ -46,22 +42,22 @@ const createBomb = () => {
     bomb.classList.add("bomb");
     bomb.style.left = Math.floor(Math.random() * (window.innerWidth - 110)) + 'px';
     document.querySelector("body").append(bomb);
-    fallDown(bomb, 64);  //start moving down the bomb
+    fallDown(bomb, 64);
     bomb.addEventListener("click", function () {
-        bombIsClicked = 1; //stop bomb from moving down
+        bombIsClicked = 1;
         //pushing surrounding birds in an array to calculate their score then deleting them
         let surrounding = checkSurroundingBirds(); //1
         countScoreResult(surrounding); //2 
         surrounding.forEach((item) => {
-            item.src = "../images/explosion.png";
-            setTimeout(() => {
-                document.querySelector("body").removeChild(item) //3
-            }, 150);
+            if (document.querySelector("body").contains(item)) {
+                item.src = "../images/explosion.png";
+                setTimeout(() => { document.querySelector("body").removeChild(item) }, 150); //3
+            }
         });
         //increasing score and killed birds number
-        document.querySelector("h2[name=score]").innerHTML = `${score}`;
+        document.querySelector("h2[name=score]").innerText = `${score}`;
         killed += surrounding.length;
-        document.querySelector("h2[name=kill]").innerHTML = `${killed}`;
+        document.querySelector("h2[name=kill]").innerText = `${killed}`;
     })
 }
 //bomb falldown
@@ -73,31 +69,28 @@ const fallDown = (bomb, top) => {
                 bomb.style.top = top + 'px';
             }
             else {
-                setTimeout(() => {
-                    document.querySelector("body").removeChild(bomb);
-                }, 150);
+                setTimeout(() => { document.querySelector("body").removeChild(bomb); }, 150);
                 clearInterval(timerId);
                 bombIsClicked = 0;
-                setTimeout(() => {
-                    createBomb();
-                }, 1000);
+                setTimeout(() => { createBomb(); }, 1000);
             }
         }
         else {
             clearInterval(timerId);
             document.querySelector("body").removeChild(bomb);
         }
-    }, 60);
+    }, 100);
 }
 //check surrounding birds
 const checkSurroundingBirds = () => {
     let currentBomb = document.querySelector(".bomb");
     let surroundingBirds = new Array();
     document.querySelectorAll(".bird").forEach((item) => {
+
         if (((item.offsetLeft + item.offsetWidth) > (currentBomb.offsetLeft - 200) &&
-            (item.offsetLeft) < (currentBomb.offsetLeft + 300))) {
-            surroundingBirds.push(item);
-        }
+            (item.offsetLeft) < (currentBomb.offsetLeft + 300)) &&
+            ((item.offsetTop + item.offsetHeight) > (currentBomb.offsetTop - 200) &&
+                (item.offsetTop) < (currentBomb.offsetTop + 300))) { surroundingBirds.push(item); }
     })
     return surroundingBirds;
 }
@@ -115,16 +108,16 @@ const displayResult = result => {
     }
 }
 //countDown Timer
-let countDown = (timeObject, result) => {
+const countDown = (timeObject, result) => {
     let id = setInterval(() => {
         if (time > 0) {
             timeObject.innerText = `${--time}`;
         }
         else {
-            clearInterval(id);
             sessionStorage.setItem("LastVisit", new Date().toLocaleString());
             sessionStorage.setItem("LastScore", score);
             document.querySelectorAll(".bird").forEach((item) => { document.querySelector("body").removeChild(item) });
+            clearInterval(id);
             displayResult(result);
         }
     }, 1000);
@@ -132,13 +125,14 @@ let countDown = (timeObject, result) => {
 //count score
 const countScoreResult = (currentBirds) => {
     for (let i = 0; i < currentBirds.length; i++) {
-        if (currentBirds[i].src.slice(29, 34) == 'white') {
+        let birdColor = currentBirds[i].src.slice(29, 34);
+        if (birdColor == 'white') {
             score += 5;
         }
-        if (currentBirds[i].src.slice(29, 34) == 'black') {
+        if (birdColor == 'black') {
             score += 10;
         }
-        if (currentBirds[i].src.slice(29, 34) == 'blue.') {
+        if (birdColor == 'blue.') {
             score -= 10;
         }
     }
@@ -168,27 +162,25 @@ window.addEventListener("load", function () {
     let Cancel = document.querySelector("button[name=cancel]");
     let result = document.querySelector("div[name=finalResult]");
     let timeObject = document.querySelector("h2[name=time]");
-    const birdsArray = ['../images/white.gif', '../images/black.gif', '../images/blue.gif']
+    const birdsSrc = ['../images/white.gif', '../images/black.gif', '../images/blue.gif']
     //do
     nameObject.innerText = sessionStorage.getItem('name');
     //display Last visit and Last score on the popUp window
     lastInfo(LastVisit, LastScore);
     popUp.classList.add("openPop");
-    //start Game
+    //start Game Button action
     startGame.onclick = () => {
         popUp.classList.remove("openPop");
         countDown(timeObject, result);
-        setTimeout(() => {
-            createBomb();
-        }, 1000);
-        createBirds(birdsArray);
+        setTimeout(() => { createBomb(); }, 1000);
+        createBirds(birdsSrc);
     }
-    //play again
+    //play again button
     playAgain.onclick = () => {
         result.classList.add("hidden");
         location.reload();
     }
-    //cancel
+    //cancel button
     Cancel.onclick = () => {
         result.classList.add("hidden");
         location.href = "../pages/index.html";
