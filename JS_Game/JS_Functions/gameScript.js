@@ -5,12 +5,13 @@ let killed = 0;
 let bombIsClicked = 0; //to remove bomb when it clicked and not let it continue moving
 //create bird
 const createBirds = (birdsSrc) => {
+    const birdHeight = 250;
     let interval = setInterval(() => {
         for (let i = 0; i < Math.floor(Math.random() * 2 + 1); i++) {
             let bird = document.createElement("embed");
             bird.src = birdsSrc[Math.floor(Math.random() * 3)];
             bird.classList.add("bird");
-            bird.style.top = Math.floor(Math.random() * (window.innerHeight - 260)) + 'px';
+            bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdHeight - 10)) + 'px';
             document.querySelector("body").append(bird);
             moveRight(bird, 0);
         }
@@ -19,9 +20,10 @@ const createBirds = (birdsSrc) => {
 }
 //bird moveRight
 const moveRight = (bird, left) => {
+    const birdWidth = 250;
     let timerId = setInterval(() => {
         if (time > 0) {
-            if (left < (window.innerWidth - 265)) {
+            if (left < (window.innerWidth - birdWidth - 15)) {
                 left += 10;
                 bird.style.left = left + 'px';
             }
@@ -37,10 +39,11 @@ const moveRight = (bird, left) => {
 }
 //create Bomb
 const createBomb = () => {
+    const bombWidth = 100;
     let bomb = document.createElement("img");
     bomb.src = "../images/bomb.png";
     bomb.classList.add("bomb");
-    bomb.style.left = Math.floor(Math.random() * (window.innerWidth - 110)) + 'px';
+    bomb.style.left = Math.floor(Math.random() * (window.innerWidth - bombWidth - 10)) + 'px';
     document.querySelector("body").append(bomb);
     fallDown(bomb, 64);
     bomb.addEventListener("click", function () {
@@ -62,9 +65,10 @@ const createBomb = () => {
 }
 //bomb falldown
 const fallDown = (bomb, top) => {
+    const bombHeight = 100;
     let timerId = setInterval(() => {
         if (time > 0) {
-            if (top < (window.innerHeight - 110) && bombIsClicked == 0) {
+            if (top < (window.innerHeight - bombHeight - 10) && bombIsClicked == 0) {
                 top += 10;
                 bomb.style.top = top + 'px';
             }
@@ -159,7 +163,7 @@ window.addEventListener("load", function () {
     let LastScore = document.querySelector("h3[name=lastScore]");
     let LastVisit = document.querySelector("h3[name=visit]");
     let playAgain = document.querySelector("button[name=playAgain]");
-    let Cancel = document.querySelector("button[name=cancel]");
+    let cancel = document.querySelector("button[name=cancel]");
     let result = document.querySelector("div[name=finalResult]");
     let timeObject = document.querySelector("h2[name=time]");
     const birdsSrc = ['../images/white.gif', '../images/black.gif', '../images/blue.gif']
@@ -181,7 +185,7 @@ window.addEventListener("load", function () {
         location.reload();
     }
     //cancel button
-    Cancel.onclick = () => {
+    cancel.onclick = () => {
         result.classList.add("hidden");
         location.href = "../pages/index.html";
     }
