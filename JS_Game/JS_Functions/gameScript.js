@@ -2,17 +2,17 @@
 let time = 60;
 let score = 0;
 let killed = 0;
-let bombIsClicked = 0; //to remove bomb when it clicked and not let it continue moving
+let bombIsClicked = 0; //to remove bomb when it's clicked and not let it continue moving
 //create bird
 const createBirds = (birdsSrc) => {
     const birdHeight = 250;
     let interval = setInterval(() => {
-            let bird = document.createElement("embed");
-            bird.src = birdsSrc[Math.floor(Math.random() * 3)];
-            bird.classList.add("bird");
-            bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdHeight - 10)) + 'px';
-            document.querySelector("body").append(bird);
-            moveRight(bird, 0);
+        let bird = document.createElement("embed");
+        bird.src = birdsSrc[Math.floor(Math.random() * 3)];
+        bird.classList.add("bird");
+        bird.style.top = Math.floor(Math.random() * (window.innerHeight - birdHeight - 10)) + 'px';
+        document.querySelector("body").append(bird);
+        moveRight(bird, 0);
         if (time == 0) { clearInterval(interval); }
     }, 900);
 }
@@ -49,10 +49,10 @@ const createBomb = () => {
         //pushing surrounding birds in an array to calculate their score then deleting them
         let surrounding = checkSurroundingBirds(); //1
         countScoreResult(surrounding); //2 
-        surrounding.forEach((item) => {
-            if (document.querySelector("body").contains(item)) {
-                item.src = "../images/explosion.png";
-                setTimeout(() => { document.querySelector("body").removeChild(item) }, 150); //3
+        surrounding.forEach((bird) => {
+            if (document.querySelector("body").contains(bird)) {
+                bird.src = "../images/explosion.png";
+                setTimeout(() => { document.querySelector("body").removeChild(bird) }, 150); //3
             }
         });
         //increasing score and killed birds number
@@ -71,7 +71,7 @@ const fallDown = (bomb, top) => {
                 bomb.style.top = top + 'px';
             }
             else {
-                setTimeout(() => { document.querySelector("body").removeChild(bomb); }, 150);
+                document.querySelector("body").removeChild(bomb);
                 clearInterval(timerId);
                 bombIsClicked = 0;
                 setTimeout(() => { createBomb(); }, 1000);
@@ -81,18 +81,18 @@ const fallDown = (bomb, top) => {
             clearInterval(timerId);
             document.querySelector("body").removeChild(bomb);
         }
-    }, 100);
+    }, 90);
 }
 //check surrounding birds
 const checkSurroundingBirds = () => {
     let currentBomb = document.querySelector(".bomb");
     let surroundingBirds = new Array();
-    document.querySelectorAll(".bird").forEach((item) => {
+    document.querySelectorAll(".bird").forEach((bird) => {
 
-        if (((item.offsetLeft + item.offsetWidth) > (currentBomb.offsetLeft - 200) &&
-            (item.offsetLeft) < (currentBomb.offsetLeft + 300)) &&
-            ((item.offsetTop + item.offsetHeight) > (currentBomb.offsetTop - 200) &&
-                (item.offsetTop) < (currentBomb.offsetTop + 300))) { surroundingBirds.push(item); }
+        if (((bird.offsetLeft + bird.offsetWidth) > (currentBomb.offsetLeft - 200) &&
+            (bird.offsetLeft) < (currentBomb.offsetLeft + 200)) &&
+            ((bird.offsetTop + bird.offsetHeight) > (currentBomb.offsetTop - 200) &&
+                (bird.offsetTop) < (currentBomb.offsetTop + 200))) { surroundingBirds.push(bird); }
     })
     return surroundingBirds;
 }
@@ -118,7 +118,7 @@ const countDown = (timeObject, result) => {
         else {
             sessionStorage.setItem("LastVisit", new Date().toLocaleString());
             sessionStorage.setItem("LastScore", score);
-            document.querySelectorAll(".bird").forEach((item) => { document.querySelector("body").removeChild(item) });
+            document.querySelectorAll(".bird").forEach((bird) => { document.querySelector("body").removeChild(bird) });
             clearInterval(id);
             displayResult(result);
         }
