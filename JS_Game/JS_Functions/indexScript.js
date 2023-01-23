@@ -9,7 +9,7 @@ import { pascalCase , CheckName } from "./functions.js";
         goButton.onclick = function(){
             if(CheckName(nameObject.value)==true)
             {
-                sessionStorage.setItem("name", pascalCase(nameObject.value))
+                localStorage.setItem("name", pascalCase(nameObject.value))
                 location.href = "../pages/game.html"
             }
             else
