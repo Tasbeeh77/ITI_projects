@@ -62,7 +62,7 @@ const createBomb = () => {
             document.querySelector("h2[name=kill]").innerText = `${killed}`;
         })
         if (time == 0) { clearInterval(id); }
-    }, 3000);
+    }, 2500);
 }
 //bomb falldown
 const fallDown = (bomb, top) => {
