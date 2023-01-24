@@ -127,19 +127,6 @@ const countDown = (timeObject, result, userName) => {
             displayResult(result);
         }
     }, 1000);
-//display result
-const displayResult = result => {
-        if (score > 50) {
-            document.querySelector("div h1[name=result]").innerText = "You Won!";
-            document.querySelector("div img[name=resultImg]").src = "../images/win.png";
-            result.classList.remove("hidden");
-        }
-        else {
-            document.querySelector("div h1[name=result]").innerText = "You Lose!";
-            document.querySelector("div img[name=resultImg]").src = "../images/lose.png";
-            result.classList.remove("hidden");
-        }
-    }
 }
 //Last user info
 const lastInfo = (LastVisit, LastScore, userName) => {
@@ -152,6 +139,17 @@ const lastInfo = (LastVisit, LastScore, userName) => {
     else {
         LastVisit.classList.add("hidden");
         LastScore.classList.add("hidden");
+    }
+}
+//display result
+const displayResult = result => {
+    if (score > 50) {
+        document.querySelector("div h1[name=result]").innerText = "You Won!";
+        document.querySelector("div img[name=resultImg]").src = "../images/win.png";
+        result.classList.remove("hidden");
+    }
+    else {
+        result.classList.remove("hidden");
     }
 }
 //page Loading
