@@ -1,2 +1,5 @@
 # ITI_projects
-## [click Here to try game](https://raw.githack.com/Tasbeeh77/ITI_projects/main/JS_Game/pages/index.html)
+## 1. JavaScript Project
+### It's a simple game  'killing birds by clicking a bomb'
+### using pure JavaScript,html and css
+### [click Here to try it](https://raw.githack.com/Tasbeeh77/ITI_projects/main/JS_Game/pages/index.html)
