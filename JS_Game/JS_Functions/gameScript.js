@@ -23,15 +23,6 @@ const createBirds = (birdsSrc) => {
         if (time == 0) { clearInterval(interval); }
     }, 800);
 }
-//setting score and killed birds number 
-const scoreKilled=(bird)=>
-{
-    if (document.querySelector("body").contains(bird)) {
-        setTimeout(() => { document.querySelector("body").removeChild(bird) }, 350); 
-    }
-    document.querySelector("h2[name=score]").innerText = `${score}`;
-    document.querySelector("h2[name=kill]").innerText = `${++killed}`;
-}
 //bird moveRight
 const moveRight = (bird, left) => {
     const birdWidth = 210;
@@ -63,8 +54,8 @@ const createBomb = () => {
     bomb.addEventListener("click", function () {
         bombIsClicked = 1;
         bomb.src = "../images/explosion.png";
-        let surrounding = checkSurroundingBirds(); //1
-        countScoreResult(surrounding); //2 
+        let surrounding = checkSurroundingBirds(); 
+        countScoreResult(surrounding); 
         surrounding.forEach((bird) => {
             bird.classList.add("fadeOut");
             scoreKilled(bird);
@@ -120,6 +111,15 @@ const countScoreResult = (currentBirds) => {
             score -= 10;
         }
     }
+}
+//display score and killed birds number 
+const scoreKilled=(bird)=>
+{
+    if (document.querySelector("body").contains(bird)) {
+        setTimeout(() => { document.querySelector("body").removeChild(bird) }, 350); 
+    }
+    document.querySelector("h2[name=score]").innerText = `${score}`;
+    document.querySelector("h2[name=kill]").innerText = `${++killed}`;
 }
 //countDown Timer
 const countDown = (timeObject, result, userName) => {
