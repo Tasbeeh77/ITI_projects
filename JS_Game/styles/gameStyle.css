@@ -92,7 +92,10 @@ button:focus {
     position: absolute;
     left: 0px;
 }
-
+.fadeOut
+{
+opacity: 0.3;
+}
 .bomb
 {
     width: 120px;

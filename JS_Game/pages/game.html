@@ -6,7 +6,7 @@
     <meta name="description" content="Start page">
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <link rel="stylesheet" href="../styles/gameStyle.css">
-    <script src="../JS_Functions/gameScript.js"></script>
+    <script type="module" src="../JS_Functions/gameScript.js"></script>
 </head>
 <body>
     <div>
@@ -18,8 +18,7 @@
         <h2 name="score"></h2>
     </div>
     <div>
-        <h2>Time: </h2>
-        <h2 name="time"></h2>
+        <h2 name="time">Time Limit : 60</h2>
     </div>
     <div>
         <h2>Birds Killed: </h2>
@@ -27,7 +26,7 @@
     </div>
     <div class="welcome">
         <img src="../images/welcome.jpg"/>
-        <h3>We hope you enjoy our game</h3>
+        <h3 id="name"></h3>
         <h3 name="second">To win you should kill 25 (black & white) birds in specified time</h3>
         <h3 name="visit">Your Last visit was : </h3>
         <h3 name="lastScore">Your Last score was: </h3>
