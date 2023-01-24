@@ -18,9 +18,10 @@
             <option value="level1">Level 1</option>
         </select>
         <h1>Enter Your Name</h1>
-        <input type="text" name="name" placeholder="Enter your name" /><br>
-        <span class="hidden" style="color: red;">Enter A valid Name</span>
-        <button>Go</button>
+        <form>
+            <input type="text" name="name" placeholder="Enter your name" required pattern="[A-Za-z]" /><br>
+            <button>Go</button>
+        </form>
     </div>
     <div>
         <h1>Game Bird Shooting Points</h1>

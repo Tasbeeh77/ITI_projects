@@ -87,8 +87,8 @@ button:focus {
 
 .bird
 {
-    width: 250px;
-    height: 250px;
+    width: 210px;
+    height: 210px;
     position: absolute;
     left: 0px;
 }

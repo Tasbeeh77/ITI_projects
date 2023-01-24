@@ -12,10 +12,7 @@ window.addEventListener("load",function(){
                 let userName=pascalCase(nameObject.value);
                 location.href = "../pages/game.html?name="+userName;
             }
-            else
-            {
-                errorMessage.classList.remove("hidden");
-            }
+
         }
     });
     
