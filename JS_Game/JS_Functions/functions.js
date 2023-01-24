@@ -24,7 +24,6 @@ export const setUsersData = (userName,score,date) => {
     lastScore: score,
     lastVisit: date
   }));
- userName;
 }
 
 
