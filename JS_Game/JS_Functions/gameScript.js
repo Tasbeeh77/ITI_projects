@@ -16,7 +16,7 @@ const createBirds = (birdsSrc) => {
         document.querySelector("body").append(bird);
         moveRight(bird, 0);
         bird.addEventListener("click", function () {
-            bird.classList.add("fadeOut"); 
+            bird.classList.add("fadeOut");
             countScoreResult(new Array(bird));
             scoreKilled(bird);
         });
@@ -54,8 +54,8 @@ const createBomb = () => {
     bomb.addEventListener("click", function () {
         bombIsClicked = 1;
         bomb.src = "../images/explosion.png";
-        let surrounding = checkSurroundingBirds(); 
-        countScoreResult(surrounding); 
+        let surrounding = checkSurroundingBirds();
+        countScoreResult(surrounding);
         surrounding.forEach((bird) => {
             bird.classList.add("fadeOut");
             scoreKilled(bird);
@@ -75,7 +75,7 @@ const fallDown = (bomb, top) => {
                 document.querySelector("body").removeChild(bomb);
                 clearInterval(timerId);
                 bombIsClicked = 0;
-                setTimeout(() => {createBomb();}, 3000);
+                setTimeout(() => { createBomb(); }, 3000);
             }
         }
         else {
@@ -89,7 +89,6 @@ const checkSurroundingBirds = () => {
     let currentBomb = document.querySelector(".bomb");
     let surroundingBirds = new Array();
     document.querySelectorAll(".bird").forEach((bird) => {
-
         if (((bird.offsetLeft + bird.offsetWidth) > (currentBomb.offsetLeft - 200) &&
             (bird.offsetLeft) < (currentBomb.offsetLeft + 200)) &&
             ((bird.offsetTop + bird.offsetHeight) > (currentBomb.offsetTop - 200) &&
@@ -113,10 +112,9 @@ const countScoreResult = (currentBirds) => {
     }
 }
 //display score and killed birds number 
-const scoreKilled=(bird)=>
-{
+const scoreKilled = (bird) => {
     if (document.querySelector("body").contains(bird)) {
-        setTimeout(() => { document.querySelector("body").removeChild(bird) }, 350); 
+        setTimeout(() => { document.querySelector("body").removeChild(bird) }, 350);
     }
     document.querySelector("h2[name=score]").innerText = `${score}`;
     document.querySelector("h2[name=kill]").innerText = `${++killed}`;
@@ -152,10 +150,12 @@ const lastInfo = (LastVisit, LastScore, userName) => {
 const displayResult = result => {
     if (score > 50) {
         document.querySelector("div h1[name=result]").innerText = "You Won!";
+        document.querySelector("div h1[name=score]").innerText = `Your final score is : ${score}`;
         document.querySelector("div img[name=resultImg]").src = "../images/win.png";
         result.classList.remove("hidden");
     }
     else {
+        document.querySelector("div h1[name=score]").innerText = `Your final score is : ${score}`;
         result.classList.remove("hidden");
     }
 }
