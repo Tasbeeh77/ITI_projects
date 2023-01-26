@@ -8,7 +8,6 @@ export const pascalCase = pascalString => {
   stringSplit = stringSplit.join(" ");
   return stringSplit;
 }
-
 export const CheckName = userName => {
   if (userName == "" || !isNaN(userName)) {
     return false;
@@ -17,7 +16,6 @@ export const CheckName = userName => {
     return true;
   }
 }
-
 export const setUsersData = (userName,score,date) => {
   localStorage.setItem(userName, JSON.stringify({
     name: userName,

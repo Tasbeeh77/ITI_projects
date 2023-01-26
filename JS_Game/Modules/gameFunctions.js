@@ -1,12 +1,11 @@
-import { setUsersData } from "./functions.js";
+import { setUsersData } from "./CommonFunctions.js";
 //shared variables
 let time = 60;
 let score = 0;
 let killed = 0;
 let bombIsClicked = 0; //to remove bomb when it's clicked and not let it continue moving
-
 //create bird
-const createBirds = (birdsSrc) => {
+export const createBirds = (birdsSrc) => {
     const birdHeight = 210;
     let interval = setInterval(() => {
         let bird = document.createElement("embed");
@@ -43,7 +42,7 @@ const moveRight = (bird, left) => {
     }, 30);
 }
 //create Bomb
-const createBomb = () => {
+export const createBomb = () => {
     const bombWidth = 120;
     let bomb = document.createElement("img");
     bomb.src = "../images/bomb.png";
@@ -120,7 +119,7 @@ const scoreKilled = (bird) => {
     document.querySelector("h2[name=kill]").innerText = `${++killed}`;
 }
 //countDown Timer
-const countDown = (timeObject, result, userName) => {
+export const countDown = (timeObject, result, userName) => {
     let id = setInterval(() => {
         if (time > 0) {
             timeObject.innerText = `0:${--time}`;
@@ -134,7 +133,7 @@ const countDown = (timeObject, result, userName) => {
     }, 1000);
 }
 //Last user info
-const lastInfo = (LastVisit, LastScore, userName) => {
+export const lastInfo = (LastVisit, LastScore, userName) => {
     if (localStorage.getItem(userName)) {
         LastVisit.classList.remove("hidden");
         LastScore.classList.remove("hidden");
@@ -159,43 +158,5 @@ const displayResult = result => {
         result.classList.remove("hidden");
     }
 }
-//page Loading
-window.addEventListener("load", function () {
-    //selectors
-    let nameObject = document.querySelector("h2[name=name]");
-    let popUp = document.querySelector(".welcome");
-    let startGame = document.querySelector("button[name=start]");
-    let LastScore = document.querySelector("h3[name=lastScore]");
-    let LastVisit = document.querySelector("h3[name=visit]");
-    let playAgain = document.querySelector("button[name=playAgain]");
-    let cancel = document.querySelector("button[name=cancel]");
-    let result = document.querySelector("div[name=finalResult]");
-    let timeObject = document.querySelector("h2[name=time]");
-    let name = document.querySelector("#name");
-    const birdsSrc = ['../images/white.gif', '../images/black.gif', '../images/blue.gif']
-    let userName = document.location.href.split('=')[1].split('%20').join(" "); //extract name from page url
-    //do
-    nameObject.innerText = `${userName}`;
-    //display Last visit and Last score on the popUp window
-    name.innerText = `${userName}, We hope you enjoy our game`
-    lastInfo(LastVisit, LastScore, userName);
-    popUp.classList.add("openPop");
-    //start Game Button action
-    startGame.onclick = () => {
-        popUp.classList.remove("openPop");
-        countDown(timeObject, result, userName);
-        createBomb();
-        createBirds(birdsSrc);
-    }
-    //play again button
-    playAgain.onclick = () => {
-        result.classList.add("hidden");
-        location.reload();
-    }
-    //cancel button
-    cancel.onclick = () => {
-        result.classList.add("hidden");
-        location.href = "../pages/index.html";
-    }
-})//load
+
 

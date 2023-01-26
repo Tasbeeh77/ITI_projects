@@ -1,4 +1,4 @@
-import { pascalCase, CheckName } from "./functions.js";
+import { pascalCase, CheckName } from "./CommonFunctions.js";
 
 window.addEventListener("load",function(){
     //selectors
