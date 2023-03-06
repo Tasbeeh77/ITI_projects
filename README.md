@@ -11,4 +11,4 @@
 #### Players can join an existing Room or create their own Room and configure its size 
 #### If a room is full other users can join it as spectators and watch the ongoing game also they can leave watching any time
 #### After the game end players have two options -> play again in the same room or leaving room and choose another one
-#### [Check Game screenshots inside project folder](https://github.com/Tasbeeh77/ITI_projects/blob/main/C%23_Connect4Game/Screenshots/Result%20of%20game.png) 
+#### [To preview game click here](https://github.com/Tasbeeh77/ITI_projects/tree/main/C%23_Connect4Game/Screenshots) 
